@@ -1,38 +1,59 @@
-
-RUN IN THE FOLLOWING ORDER FROM THE SAME FOLDER:
+## RUN IN THE FOLLOWING ORDER FROM THE SAME FOLDER:
 
 1_geneAllTablesJSONfromPatterns.R
+
 2_geneHCTfromJSONtables.R
+
 3_geneSQLandNLQfromJSONtemplates.R
+
 4_geneNonSemanticTablesQandA.R
+
 5_geneCleanBenchmarkData.R
+
 6_countSyntheticData.R
+
 
 config.R # contain PATH to create working and final BENCHMARK folders and other options
 
-# NECESSARY Toolboxes used by other codes
+## NECESSARY TOOLBOXES used by other codes
 toolboxJSONtemplateForAnnotator.R
 toolboxSQLandNLQ.R
 toolboxTABLESgenerator.R
 
-# NECESSARY PARAMETER FILES
+## NECESSARY PARAMETER FILES
 PARAM_semantics.json
+
 PARAM_tableTemplates.json
+
 PARAM_NLquestionTemplates.json
 
-# PACKAGES TO INSTALL
+
+## PACKAGES TO INSTALL
+
 install.packages("jsonlite")
+
 install.packages("pivottabler")
+
 install.packages("htmlTable")
+
 install.packages("psycModel")
+
 install.packages("pagedown")
+
 install.packages("magick")
+
 install.packages("rlang")
+
 install.packages("sqldf")
+
 install.packages("tidyquery")
+
 install.packages("stringr")
+
 install.packages("data.table")
+
 install.packages("pdftools")
+
 
 # SYSTEM CONFIGURATION
 
