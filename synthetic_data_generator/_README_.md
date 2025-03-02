@@ -1,7 +1,7 @@
-## CONFIGURATION
+## INSTALLATION
 Install R version 4.4.2 and Rstudio (see configuration details below).
 
-Download all the files from the "synthetic_data_generator" repository.
+Download all the files from the "generator_code" repository.
 
 Set Rstudio working directory to the folder containing these files. 
 
