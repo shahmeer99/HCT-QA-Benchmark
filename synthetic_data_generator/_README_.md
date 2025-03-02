@@ -20,7 +20,7 @@ PARAM_semantics.json
 PARAM_tableTemplates.json
 PARAM_NLquestionTemplates.json
 
-PACKAGES TO INSTALL
+# PACKAGES TO INSTALL
 install.packages("jsonlite")
 install.packages("pivottabler")
 install.packages("htmlTable")
