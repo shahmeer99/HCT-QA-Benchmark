@@ -1,19 +1,39 @@
-## RUN IN THE FOLLOWING ORDER FROM THE SAME FOLDER:
+## CONFIGURATION
+Install R version 4.4.2 and Rstudio (see configuration details below).
 
-1_geneAllTablesJSONfromPatterns.R
+Download all the files from the "synthetic_data_generator" repository.
 
-2_geneHCTfromJSONtables.R
+Set Rstudio working directory to the folder containing these files. 
 
-3_geneSQLandNLQfromJSONtemplates.R
+## RUN IN THE FOLLOWING ORDER
 
-4_geneNonSemanticTablesQandA.R
+1. Generate the table instances
+ 
+> 1_geneAllTablesJSONfromPatterns.R
 
-5_geneCleanBenchmarkData.R
+2. Generate relational tables and their HCT variants in the TABLES folder
+  
+> 2_geneHCTfromJSONtables.R
 
-6_countSyntheticData.R
+3. Generate SQL and NL questions for each table in the QandA folder
 
+> 3_geneSQLandNLQfromJSONtemplates.R
 
-config.R # contain PATH to create working and final BENCHMARK folders and other options
+4. Generate the non-semantic versions of all the tables and questions
+
+> 4_geneNonSemanticTablesQandA.R
+
+5. Generate the final benchmark folder
+
+> 5_geneCleanBenchmarkData.R
+
+6. Get a summary of the generated data
+
+> 6_countSyntheticData.R
+
+## OPTIONS
+
+config.R # contain PATH to create working and final folders and set other options
 
 ## NECESSARY TOOLBOXES used by other codes
 toolboxJSONtemplateForAnnotator.R
