@@ -53,18 +53,31 @@ PARAM_NLquestionTemplates.json
 ## PACKAGES TO INSTALL
 
 > install.packages("remotes")
+> 
 > library(remotes)
+> 
 > install_version("jsonlite", "1.9.0")
+> 
 > install_version("pivottabler", "1.5.5")
+> 
 > install_version("htmlTable", "2.4.3")
+> 
 > install_version("psycModel", "0.5.0")
+> 
 > install_version("pagedown", "0.22")
+> 
 > install_version("magick", "2.8.5")
+> 
 > install_version("rlang", "1.1.5")
+> 
 > install_version("sqldf", "0.4-11")
+> 
 > install_version("tidyquery", "0.2.4")
+> 
 > install_version("stringr", "1.5.1")
+> 
 > install_version("data.table", "1.16.4")
+> 
 > install_version("pdftools", "3.4.1")
 
 
