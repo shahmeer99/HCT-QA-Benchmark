@@ -1,12 +1,12 @@
 # HCTQA-Benchmark
 
-Project Repository
-|
-├── inference_evaluate
-│   ├── script1.py
-│   ├── script2.py
-│   └── ...
-|
+Project Repository  
+|  
+├── inference_evaluate 
+│   ├── script1.py  
+│   ├── script2.py  
+│   └── ...  
+|  
 ├── realWorld_data_processing
 │   ├── tables
 │   │   ├── csvs
