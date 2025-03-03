@@ -1,9 +1,13 @@
 ## INSTALLATION
 Install R version 4.4.2 and Rstudio (see configuration details below).
 
+> https://posit.co/download/rstudio-desktop/
+ 
 Download all the files from the "generator_code" repository.
 
 Set Rstudio working directory to the folder containing these files. 
+
+Install all necessary R-packages (see Packages to install below). 
 
 ## RUN IN THE FOLLOWING ORDER
 
@@ -81,7 +85,7 @@ PARAM_NLquestionTemplates.json
 > install_version("pdftools", "3.4.1")
 
 
-# SYSTEM CONFIGURATION
+## SYSTEM CONFIGURATION
 
 > sessionInfo()
 
