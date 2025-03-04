@@ -46,10 +46,10 @@ Project Repository
 
 Example of HCT:
 
-![alt text](./synthetic_data_generator/HCTexample.png?raw=true "Title")
+![Example of HCT](./synthetic_data_generator/HCTexample.png?raw=true "Title")
 
 Example of 15 natural language questions generated for the HCT above based on custom templates ("," and ";" in answers, are column and row separators respectively):
-
+(see Food Import-Export template in [NL question templates](./synthetic_data_generator/generator_code/PARAM_NLquestionTemplates.json))
 > Q1: *one column, one row selection* "What is the amount of Export of Milk in 2017?"
 >
 > $\rightarrow$ "57"
