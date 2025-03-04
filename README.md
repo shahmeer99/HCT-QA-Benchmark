@@ -45,6 +45,7 @@ Project Repository
 5. Synthetic question templates
 
 Example of HCT:
+
 ![alt text](./synthetic_data_generator/HCTexample.png?raw=true "Title")
 
 Example of 15 natural language questions generated for the HCT above based on custom templates ("," and ";" in answers, are column and row separators respectively):
