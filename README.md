@@ -44,9 +44,10 @@ Project Repository
 4. Result parsing & scoring code
 5. Synthetic question templates
 
-![alt text](https://github.com/shahmeer99/HCT-QA-Benchmark/synthetic_data_generator/HCTexample.png)
+Example of HCT:
+![alt text](./synthetic_data_generator/HCTexample.png?raw=true "Title")
 
-Here are the 15 natural language questions generated for the table above based on custom templates ("," and ";" in answers, are column and row separators respectively):
+Example of 15 natural language questions generated for the HCT above based on custom templates ("," and ";" in answers, are column and row separators respectively):
 
 > Q1: *one column, one row selection* "What is the amount of Export of Milk in 2017?"
 >
