@@ -38,3 +38,7 @@ Project Repository
     ├── prompt2.jsonl
     └── ...
 ```
+1. Add explanation of 15 templates types  
+2. Add set up (untarring all data folders)  
+3. Infernce code upload (generic llm inference + anonymized cloud inference)  
+4. Result parsing & scoring code
