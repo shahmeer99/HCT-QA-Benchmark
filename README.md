@@ -44,6 +44,7 @@ Project Repository
 4. Result parsing & scoring code
 5. Synthetic question templates
 
+![alt text](https://github.com/shahmeer99/HCT-QA-Benchmark/synthetic_data_generator/HCTexample.png)
 
 Here are the 15 natural language questions generated for the table above based on custom templates ("," and ";" in answers, are column and row separators respectively):
 
