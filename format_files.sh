@@ -27,4 +27,27 @@ tar -xzf "$DATASET_DIR/tables.csvs.tar.gz" -C "$CSVS_DEST"
 echo "All images extracted and moved to $IMAGES_DEST"
 echo "tables.csvs.tar.gz extracted into $CSVS_DEST"
 
+### INFLATE REAL WORLD TABLES QAPS - ./realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.json.gz
+
+# Define paths
+REAL_WORLD_QAPS_FILE_PATH="./realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.json.gz"
+REAL_WORLD_QAPS_DEST="./realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.json"
+
+# Extract real world qaps file
+gunzip -k "$REAL_WORLD_QAPS_FILE_PATH"
+
+echo "Real world qaps file extracted to $REAL_WORLD_QAPS_DEST"
+
+### INFLATE SYNTHETIC TABLES PROMPTS - ./synthetic_data_generator/prompts/synthetic_HCT-text_based-all_prompts.jsonl.gz
+
+# Define paths
+SYNTHETIC_PROMPTS_FILE_PATH="./synthetic_data_generator/prompts/synthetic_HCT-text_based-all_prompts.jsonl.gz"
+SYNTHETIC_PROMPTS_DEST="./synthetic_data_generator/prompts/synthetic_HCT-text_based-all_prompts.jsonl"
+
+# Extract synthetic prompts file
+gunzip -k "$SYNTHETIC_PROMPTS_FILE_PATH"
+
+echo "Synthetic prompts file extracted to $SYNTHETIC_PROMPTS_DEST"
+
+
 ##### 
