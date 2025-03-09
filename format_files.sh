@@ -30,8 +30,8 @@ echo "tables.csvs.tar.gz extracted into $CSVS_DEST"
 ### INFLATE REAL WORLD TABLES QAPS - ./realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.json.gz
 
 # Define paths
-REAL_WORLD_QAPS_FILE_PATH="./realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.jsonl.gz"
-REAL_WORLD_QAPS_DEST="./realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.jsonl"
+REAL_WORLD_QAPS_FILE_PATH="./realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.json.gz"
+REAL_WORLD_QAPS_DEST="./realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.json"
 
 # Extract real world qaps file
 gunzip -k "$REAL_WORLD_QAPS_FILE_PATH"
