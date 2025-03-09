@@ -30,7 +30,7 @@ class llm_query:
     
     def query(self, user_prompts, system_prompts=None, temperature=0.1, repetition_penalty=1.1, max_tokens=128000):
         sampling_params = SamplingParams(temperature=temperature, repetition_penalty=repetition_penalty, max_tokens=max_tokens)
-        model_output = self.llm.generate(user_prompts, sampling_params)
+        model_output = self.llm.chat(user_prompts, sampling_params)
             
         return model_output
 

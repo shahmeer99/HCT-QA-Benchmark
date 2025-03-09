@@ -59,34 +59,44 @@ def file_to_data_url(file_path: str):
     return f"data:{mime_type};base64,{encoded_string}"
 
 
-def make_image_prompt_dict():
+def make_image_prompt_dict(qaps_file):
     all_dfs = []
 
-    ### Load QAPS File - Final_Files_For_Git/actual_git_repo/HCTQA-Benchmark/realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.json.gz
-    with gzip.open("/llms1/mshahmmer/generic_llm_inference/hcsd_raw_files/realWorld_HCT_qaps.json.gz", "r") as f:
+    ### Load QAPS File - ../realWorld_data_processing/realWorld_datasets/qaps/realWorld_HCT_qaps.json
+    with open(qaps_file, "r") as f:
         qaps_list = json.load(f)
     
     all_qaps_dict = {}
     for table_entry in qaps_list:
-        relative_path_to_table_image = table_entry["table_image_local_path"]
+        relative_path_to_table_image = table_entry["table_info"]["table_image_local_path"]
         for question_entry in table_entry['questions']:
             qap_id_t = question_entry['question_id']
-            all_qaps_dict[qap_id_t] = {
-                "image_path": relative_path_to_table_image,
-                "question": question_entry["question"]
-            }
+            if os.path.exists(relative_path_to_table_image):
+                all_qaps_dict[qap_id_t] = {
+                    "image_path": relative_path_to_table_image,
+                    "question": question_entry["question"]
+                }
+            
+            elif os.path.exists(os.path.join("/".join(relative_path_to_table_image.split("/")[:1]), relative_path_to_table_image.split("/")[:1].replace("_","--"))):
+                all_qaps_dict[qap_id_t] = {
+                    "image_path": os.path.join("/".join(relative_path_to_table_image.split("/")[:1]), relative_path_to_table_image.split("/")[:1].replace("_","--")),
+                    "question": question_entry["question"]
+                }
+            else:
+                raise Exception("Image file not found:", relative_path_to_table_image)
+
 
     print("*** TOTAL QAPS: ***", len(all_qaps_dict))
     return all_qaps_dict
 
 
-def do_inference(model_t, output_folder):
+def do_inference(model_t, output_folder, qaps_file):
 
     # Ensure output_folder exists
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    if model_t == "meta-llama/Llama-3.2-11B-Vision-Instruct":
+    if model_t == "meta-llama/Llama-3.2-11B-Vision-Instruct": # CUDA ERROR
         llm = vllm.LLM(model=model_t, 
                     tensor_parallel_size = 2,
                     max_model_len=4096,
@@ -107,7 +117,7 @@ def do_inference(model_t, output_folder):
     ############################################ QWEN
     ############################################################################################
     ### Load all question and image paths 
-    all_qap_info_dict = make_image_prompt_dict()
+    all_qap_info_dict = make_image_prompt_dict(qaps_file)
     output_file_name = os.path.join(output_folder, f"{model_t.split('/')[-1]}--vision--results.jsonl")
 
     if model_t == "Qwen/Qwen2-VL-7B-Instruct":
@@ -173,7 +183,7 @@ def do_inference(model_t, output_folder):
                     for o in all_outputs_buffer:
                         f.write(json.dumps(o) + "\n")
                 all_outputs_buffer = []
-                print("COMPLETED:", count)
+                print(f"COMPLETED: {count} out of {len(all_qap_info_dict)} prompts - {(count*100)/len(all_qap_info_dict)}")
 
             count += 1
 
@@ -219,7 +229,7 @@ def do_inference(model_t, output_folder):
                     for o in all_outputs_buffer:
                         f.write(json.dumps(o) + "\n")
                 all_outputs_buffer = []
-                print("COMPLETED:", count)
+                print(f"COMPLETED: {count} out of {len(all_qap_info_dict)} prompts - {(count*100)/len(all_qap_info_dict)}")
 
             count += 1
 
@@ -260,7 +270,7 @@ def do_inference(model_t, output_folder):
                     for o in all_outputs_buffer:
                         f.write(json.dumps(o) + "\n")
                 all_outputs_buffer = []
-                print("COMPLETED:", count)
+                print(f"COMPLETED: {count} out of {len(all_qap_info_dict)} prompts - {(count*100)/len(all_qap_info_dict)}")
 
             count += 1
     
@@ -330,9 +340,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, required=True, help="Model name to run inference on")
     parser.add_argument("--output_folder", type=str, required=True, help="Output folder to save results")
+    parser.add_argument("--qaps_file", type=str, required=True, help="Path to QAPS file")
+
     args = parser.parse_args()
 
-    do_inference(args.model, args.output_folder)
+    do_inference(args.model, args.output_folder, args.qaps_file)
 
 # Example command to run this script
 # python vllm_inference.py --model "meta-llama/Llama-3.2-11B-Vision-Instruct"
