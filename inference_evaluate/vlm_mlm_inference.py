@@ -118,7 +118,7 @@ def do_inference(model_t, output_folder, qaps_file):
     ############################################################################################
     ### Load all question and image paths 
     all_qap_info_dict = make_image_prompt_dict(qaps_file)
-    output_file_name = os.path.join(output_folder, f"{model_t.split('/')[-1]}--vision--results.jsonl")
+    output_file_name = os.path.join(output_folder, f"results--{model_t.split('/')[-1]}--vision--results.jsonl")
 
     if model_t == "Qwen/Qwen2-VL-7B-Instruct":
 
@@ -174,7 +174,7 @@ def do_inference(model_t, output_folder, qaps_file):
             output = llm.generate(vllm.inputs.TokensPrompt(prompt_token_ids = inputs["input_ids"].flatten().tolist()), sampling_params=sampling_params)
             all_outputs_buffer.append({
                 "qap_id": qap_id,
-                "output": output[0].outputs[0].text
+                "response": output[0].outputs[0].text
             })
 
             # if buffer is size 50, write to file
@@ -220,7 +220,7 @@ def do_inference(model_t, output_folder, qaps_file):
                 generated_text = o.outputs[0].text
                 all_outputs_buffer.append({
                     "qap_id": qap_id,
-                    "output": generated_text
+                    "response": generated_text
                 })
 
             # if buffer is size 50, write to file
@@ -261,7 +261,7 @@ def do_inference(model_t, output_folder, qaps_file):
             outputs = llm.chat(messages, sampling_params=sampling_params)
             all_outputs_buffer.append({
                 "qap_id": qap_id,
-                "output": outputs[0].outputs[0].text
+                "response": outputs[0].outputs[0].text
             })
             
             # if buffer is size 50, write to file
@@ -314,7 +314,7 @@ def do_inference(model_t, output_folder, qaps_file):
                 generated_text = o.outputs[0].text
                 all_outputs_buffer.append({
                     "qap_id": qap_id,
-                    "output": generated_text
+                    "response": generated_text
                 })
 
             # if buffer is size 50, write to file
