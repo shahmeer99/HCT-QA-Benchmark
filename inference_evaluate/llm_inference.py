@@ -15,7 +15,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # Necessary Arguments
-    parser.add_argument('--prompts_folder', type=str, default='', help="Path to file containing all the prompts.")
+    parser.add_argument('--prompts_file', type=str, default='', help="Path to file containing all the prompts.")
     parser.add_argument('--output_folder', type=str, default='', help="Path to file to write results to.")
     parser.add_argument('--use_system_prompt', type=bool, default=True, help="Whether to use system prompt or not.")
 
@@ -42,28 +42,41 @@ if __name__ == '__main__':
     print("LOADED MODEL: ", args.model_path)
 
     ## Ensure the seed file exists
-    if not os.path.exists(args.prompts_folder):
+    if not os.path.exists(args.prompts_file):
         raise Exception('File does not exist:', args.prompts_file)
 
     ## Open prompts json file
-    for fname in os.listdir(args.prompts_folder):
-        print(fname)
-        if "ignore" in fname or "IGNORE" in fname:
-            continue
-        elif args.use_system_prompt and "--without_system_prompts" in fname:
-            continue
-        elif args.use_system_prompt == False and "--without_system_prompts" not in fname:
-            continue
-        elif fname.endswith('.json'):
-            with open(os.path.join(args.prompts_folder, fname), 'r', encoding='utf-8') as f:
-                seeds = json.load(f)
-        elif fname.endswith('.jsonl'):
-            print(f"Loading {fname} as jsonl")
-            with open(os.path.join(args.prompts_folder, fname), 'r', encoding='utf-8') as f:
-                seeds = [json.loads(line) for line in f]
-    
+    with open(args.prompts_file, 'r', encoding='utf-8') as f:
+        if args.prompts_file.endswith('.json'):
+            seeds = json.load(f)
+        elif args.prompts_file.endswith('.jsonl'):
+            seeds = [json.loads(line) for line in f]
+        else:
+            raise Exception('Invalid file type:', args.prompts_file, '[ Prompts file Must be .json or .jsonl ]')
+
+
+        ## remove system prompt if model does not support them (gemma in our case)
+        if "google/gemma" in args.model_path.lower():
+            for x in range(len(seeds)):
+                seed_t = seeds[x]
+                new_prompt = []
+                current_prompt = seed_t['prompt']
+                to_add_content = ""
+                for i in range(len(current_prompt)):
+                    if current_prompt[i]['role'] == 'system':
+                        to_add_content += current_prompt[i]['content']
+                    elif current_prompt[i]['role'] == 'user':
+                        current_prompt[i]['content'] = f"{to_add_content} {current_prompt[i]['content']}"
+                        new_prompt.append(current_prompt[i])
+                        if to_add_content != "":
+                            break
+                seed_t['prompt'] = new_prompt
+                seeds[x] = seed_t
+
+        print(seeds[0])
+ 
         ## load the data
-        print('++ Processing:', fname)
+        print('++ Processing:', args.prompts_file)
 
         ## Separate the seeds into batches
         N = len(seeds)
@@ -84,7 +97,7 @@ if __name__ == '__main__':
             user_prompts = [seed_t['prompt'] for seed_t in batch]
 
             t_beg = time.time()
-            results = llm.chat(user_prompts=user_prompts, temperature=0.01, repetition_penalty=1.1, max_tokens=args.max_tokens)
+            results = llm.query(user_prompts=user_prompts, temperature=0.01, repetition_penalty=1.1, max_tokens=args.max_tokens)
             print('Batch:', i, 'Time:', time.time()-t_beg)
 
             for j in range(len(results)):
@@ -101,14 +114,14 @@ if __name__ == '__main__':
                 except:
                     pass
             
-        # save the results by appending each batch to output_folder
-        model_name = args.model_path.split('/')[-1]
-        prompt_dataset_type = fname.replace(".json", "").replace(".jsonl", "")
-        outfile_path = os.path.join(args.output_folder, f"results--{model_name}--{prompt_dataset_type}.jsonl")
-        with open(outfile_path, 'a', encoding='utf-8') as f:
-            for out in all_outputs:
-                f.write(json.dumps(out)+'\n')
-            
-        t_end = time.time()
-        print(f'++ Total time for task {args.model_path}:', t_end-t_start)
-        print('Done.\n ********************* \n ********************* \n')
+    # save the results by appending each batch to output_folder
+    model_name = args.model_path.split('/')[-1]
+    prompt_dataset_type = args.prompts_file.split("/")[-1].replace(".json", "").replace(".jsonl", "")
+    outfile_path = os.path.join(args.output_folder, f"results--{model_name}--{prompt_dataset_type}.jsonl")
+    with open(outfile_path, 'a', encoding='utf-8') as f:
+        for out in all_outputs:
+            f.write(json.dumps(out)+'\n')
+        
+    t_end = time.time()
+    print(f'++ Total time for task {args.model_path}:', t_end-t_start)
+    print('Done.\n ********************* \n ********************* \n')
