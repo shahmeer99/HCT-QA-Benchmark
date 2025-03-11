@@ -15,7 +15,7 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 ## **Repository Structure**
 
 ```
-├── realWorld_data_processing/   # Real-world dataset
+├── datasets/   # Real-world dataset
 │   ├── qaps/                    # Question-answer pairs
 │   ├── prompts/                 # Prompts used in experiments
 │   ├── tables/                  # HCT images and CSVs (compressed as .gz files)
@@ -43,7 +43,7 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 
 ## **Data Components**
 
-### **Real-World Data Processing** (`realWorld_data_processing/`)
+### **Real-World Data Processing** (`datasets/`)
 - **`qaps/`**: Contains question-answer pairs.
 - **`prompts/`**: Prompt templates used for model inference.
 - **`tables/`**: HCTs provided as **compressed** `.gz` files (CSV and images).
