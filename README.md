@@ -5,7 +5,7 @@ This repository provides a benchmark for question answering on **Human-Centric T
 
 Example of HCT:
 
-![Example of HCT](./synthetic_data_generator/HCTexample.png?raw=true "Title")
+![Example of HCT](https://hcsdtables.qcri.org/datasets/all_images/psa_10_336.jpg)
 
 
 Details of the benchmark methodology and dataset can be found in our upcoming paper (**link to be added**).
