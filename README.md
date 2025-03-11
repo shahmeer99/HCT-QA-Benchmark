@@ -48,12 +48,11 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 - **`qaps/`**: Contains question-answer pairs.
 - **`prompts/`**: Prompt templates used for model inference.
 - **`tables/`**: HCTs provided as **compressed** `.gz` files (CSV and images).
-- **`format_files.sh`**: Extracts and prepares the dataset for use.
   
 To extract the data:
 ```bash
-chmod +x realWorld_data_processing/format_files.sh
-./realWorld_data_processing/format_files.sh
+chmod +x ./format_files.sh
+./format_files.sh
 ```
 
 ### **Synthetic Data Generation** (`synthetic_data_generator/`)
