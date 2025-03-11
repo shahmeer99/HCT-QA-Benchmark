@@ -19,7 +19,6 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 │   ├── qaps/                    # Question-answer pairs
 │   ├── prompts/                 # Prompts used in experiments
 │   ├── tables/                  # HCT images and CSVs (compressed as .gz files)
-│   ├── format_files.sh          # Script to prepare and uncompress data
 │
 ├── synthetic_data_generator/    # Synthetic HCT generation (has its own README)
 │   ├── README_SYNTHETIC_GENERATOR.md
@@ -37,6 +36,7 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 ├── requirements.txt             # Dependencies for the benchmark
 ├── .env.example                 # Example environment file (for HF token)
 ├── to_run.sh                    # Script to run all experiments
+├── format_files.sh              # Script to prepare and uncompress data
 └── README.md                    # This README file
 ```
 
