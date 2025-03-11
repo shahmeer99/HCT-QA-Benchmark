@@ -15,12 +15,13 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 ## **Repository Structure**
 
 ```
-├── datasets/   # Real-world dataset
+├── datasets/                    # Real-world dataset
 │   ├── qaps/                    # Question-answer pairs
 │   ├── prompts/                 # Prompts used in experiments
 │   ├── tables/                  # HCT images and CSVs (compressed as .gz files)
 │
 ├── synthetic_data_generator/    # Synthetic HCT generation (has its own README)
+│   ├── ...                      # Scripts (in R) needed to run synthetic generator
 │   ├── README_SYNTHETIC_GENERATOR.md
 │
 ├── inference_evaluate/          # Main experiment scripts
