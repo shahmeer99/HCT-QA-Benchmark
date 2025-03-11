@@ -3,7 +3,6 @@ import sys, os, torch, argparse, json, math, time, gzip
 from vllm.utils import cuda_device_count_stateless
 from llm_query import llm_query
 import PIL, vllm, base64
-import argparse
 import pandas as pd
 from tqdm import tqdm
 os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
