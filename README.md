@@ -34,7 +34,6 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 │   ├── model_responses/
 │
 ├── requirements.txt             # Dependencies for the benchmark
-├── .env.example                 # Example environment file (for HF token)
 ├── to_run.sh                    # Script to run all experiments
 ├── format_files.sh              # Script to prepare and uncompress data
 └── README.md                    # This README file
