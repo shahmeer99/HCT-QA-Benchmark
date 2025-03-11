@@ -1,0 +1,7 @@
+huggingface-hub==0.29.1
+pillow==11.1.0
+pandas==2.2.3
+torch==2.4.0
+vllm==0.6.2
+tqdm
+seaborn
