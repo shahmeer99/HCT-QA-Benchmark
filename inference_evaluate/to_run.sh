@@ -1,4 +1,7 @@
-### Load Conda Env
+### THIS SCRIPT REQUIRES 4 A100's 80GB VRAM to run (change batch size to adjust this GPU usage)
+
+### Activate conda environment 
+# conda activate <path_to_your_conda_env>
 
 ### Change to directory 
 #################### Set Input Paramss - SET YOURSELF USING ABSOLUTE PATHS
@@ -11,10 +14,7 @@ vlm_text_inference_results_path="../results/model_responses/vlms/"
 
 scores_results_path="../results/scores/"
 
-batch_size_for_inference=128
-
-# USE GPU IDs [4,5,6,7] only and do not touch others
-export CUDA_VISIBLE_DEVICES=4,5,6,7
+batch_size_for_inference=128 # Change according to resource availability
 
 ####################################################################################################################
 #################### Make Prompts File - Already Run 
