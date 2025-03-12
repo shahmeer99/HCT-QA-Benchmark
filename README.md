@@ -48,7 +48,15 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 - **`qaps/`**: Contains question-answer pairs.
 - **`prompts/`**: Prompt templates used for model inference.
 - **`tables/`**: HCTs provided as **compressed** `.gz` files (CSV and images).
-  
+
+Ground Truth Format:
+The `gt` attribute in the prompts and qaps files present the answer in the following format:
+- Values from the same row are encased in `{}` and within that values from different columns are separated by `|`
+- Values from different rows are separated by `||` 
+- Aggregations are put in `{}` and multiple distinct aggregations are separated by `||`
+
+This format allows for more detailed evaluation of the models.
+
 To extract the data:
 ```bash
 chmod +x ./format_files.sh
