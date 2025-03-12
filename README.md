@@ -30,12 +30,12 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 │   ├── make_prompts_file.py     # Creates prompt files from QAPs & table CSVs
 │   ├── llm_query.py             # Helper script for LLM inference
 │   ├── score_model_responses.ipynb # Evaluates responses against ground truth
+│   ├── to_run.sh                 # Script to run all experiments
 │
 ├── results/                     # Example model responses (subset only)
 │   ├── model_responses/
 │
 ├── requirements.txt             # Dependencies for the benchmark
-├── to_run.sh                    # Script to run all experiments
 ├── format_files.sh              # Script to prepare and uncompress data
 └── README.md                    # This README file
 ```
