@@ -49,7 +49,7 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 - **`prompts/`**: Prompt templates used for model inference.
 - **`tables/`**: HCTs provided as **compressed** `.gz` files (CSV and images).
 
-Ground Truth Format:
+**Ground Truth Format**:
 The `gt` attribute in the prompts and qaps files present the answer in the following format:
 - Values from the same row are encased in `{}` and within that values from different columns are separated by `|`
 - Values from different rows are separated by `||` 
