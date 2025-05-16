@@ -109,7 +109,7 @@ python llm_inf.py --model_name_or_path "google/gemma-3-12b-it" --output_folder "
 The parameters for this command are:
 | Parameter | Description |
 |-----------|-------------|
-| `--model_name_or_path` | Path to local or huggingface mode. "all" for running all experiments in the paper. |
+| `--model_name_or_path` | Path to local or huggingface model. "all" for models used in the paper. |
 | `--output_folder` | Path to folder where model responses will be stored.|
 | `--data_source_type` | "real", "synthetic", "all" to choose what type of HCTs to run inference on. |
 | `--split_name` | "train", "validation", "test" or "all" to choose which split of data to run inference on |
