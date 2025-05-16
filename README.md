@@ -15,29 +15,32 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 ## **Repository Structure**
 
 ```
-├── datasets/                    # Real-world dataset
+├── datasets/realWorld_datasets/ # Real-world dataset
 │   ├── qaps/                    # Question-answer pairs
-│   ├── prompts/                 # Prompts used in experiments
-│   ├── tables/                  # HCT images and CSVs (compressed as .gz files)
+│   ├── prompts/                           # Prompts used in experiments
+│   ├── tables/                            # HCT images and CSVs (compressed as .gz files)
 │
-├── synthetic_data_generator/    # Synthetic HCT generation (has its own README)
-│   ├── ...                      # Scripts (in R) needed to run synthetic generator
+├── synthetic_data_generator/                # Synthetic HCT generation (has its own README)
+│   ├── ...                                  # Scripts (in R) needed to run synthetic generator
 │   ├── README_SYNTHETIC_GENERATOR.md
 │
-├── inference_evaluate/          # Main experiment scripts
-│   ├── llm_inference.py         # Runs inference with LLMs
-│   ├── vlm_mlm_inference.py     # Runs inference with VLMs
-│   ├── make_prompts_file.py     # Creates prompt files from QAPs & table CSVs
-│   ├── llm_query.py             # Helper script for LLM inference
-│   ├── score_model_responses.ipynb # Evaluates responses against ground truth
-│   ├── to_run.sh                 # Script to run all experiments
+├── scripts/                                 # All scripts
+│   ├── inference_experiments/               # Runs inference experiments from paper
+│   │   ├── llm_inference/
+│   │   ├── vlm_inference/
+│   ├── score_model_responses/               # Runs inference with VLMs
+│   │   ├── score_responses.py               # Script to score all model responses (llm + vlm)
+│   ├── finetuning/                          # Skeleton folder to set up LLAMA-FACTORY in
+│   │   ├── datatset_prep_for_llama_factory/
+│   │   ├── config_yamls/
 │
-├── results/                     # Example model responses (subset only)
+├── results/                                 # Example model responses (subset only)
 │   ├── model_responses/
+│   ├── scores/
 │
-├── requirements.txt             # Dependencies for the benchmark
-├── format_files.sh              # Script to prepare and uncompress data
-└── README.md                    # This README file
+├── requirements.txt                         # Dependencies for the benchmark
+├── format_files.sh                          # Script to prepare and uncompress data
+└── README.md                                # This README file
 ```
 
 ---
@@ -46,8 +49,9 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 
 ### **Real-World Data Processing** (`datasets/`)
 - **`qaps/`**: Contains question-answer pairs.
-- **`prompts/`**: Prompt templates used for model inference.
 - **`tables/`**: HCTs provided as **compressed** `.gz` files (CSV and images).
+
+#### The data is also available in [`HuggingFace`](https://huggingface.co/datasets/qcri-ai/HCTQA)
 
 **Ground Truth Format**:
 The `gt` attribute in the prompts and qaps files present the answer in the following format:
@@ -57,8 +61,8 @@ The `gt` attribute in the prompts and qaps files present the answer in the follo
 
 This format allows for more detailed evaluation of the models.
 
-To extract the data:
-```bash
+To extract the table CSVs and Images run:
+```setup
 chmod +x ./format_files.sh
 ./format_files.sh
 ```
@@ -74,31 +78,49 @@ Refer to [`synthetic_data_generator/README_SYNTHETIC_GENERATOR.md`](synthetic_da
 ### **1. Setup & Installation**
 
 We recommend using **Python 3.12** and a virtual environment (e.g., Conda):
-```bash
+```setup
 conda create --name hct_benchmark python=3.12 -y
 conda activate hct_benchmark
 ```
 
 Install dependencies:
-```bash
+```setup
 pip install -r requirements.txt
 ```
 
 #### **Set Up Hugging Face Token**
-Some models require access via **Hugging Face**. Create a `.env` file:
-```bash
-echo "HUGGINGFACE_TOKEN=your_token_here" > .env
+Some models require access via **Hugging Face**. Create a `.env` file in the "HCT-QA-Benchmark" folder:
+```setup
+echo "HUGGINGFACE_TOKEN=<your_token_here>" > .env
 ```
-Replace `your_token_here` with your actual **Hugging Face API Token**.
+Replace `<your_token_here>` with your actual **Hugging Face API Token**.
 
 ---
 
-### **2. Running the Experiment**
+### **2. Running the Experiments**
 
-The main script to run the full experiment is `to_run.sh`, which includes example usages for running LLM inference on real-world and synthetic datasets, as well as VLM inference.
+To run experiment with text-only LLMs run:  
+```bash
+cd /scripts/llm_inference
+
+python llm_inf.py --model_name_or_path "google/gemma-3-12b-it" --output_folder "../../results/model_responses/llms/" --data_source_type "real" --split_name "all" --batch_size 32 --num_gpus 1 --use_system_prompt True
+```
+
+The parameters for this command are:
+| Parameter | Description |
+|-----------|-------------|
+| `--model_name_or_path` | Path to local or huggingface mode. "all" for running all experiments in the paper. |
+| `--output_folder` | Path to folder where model responses will be stored.|
+| `--data_source_type` | "real", "synthetic", "all" to choose what type of HCTs to run inference on. |
+| `--split_name` | "train", "validation", "test" or "all" to choose which split of data to run inference on |
+| `--batch_size` | Batch size for inference |
+| `--num_gpus` | Number of available GPUs to run parallel inference on, default = 1. |
+| `--use_system_prompt` | Boolean to determine whether to use system prompt or not (some models like gemma-2 do not support system prompting) |
+
+
 
 #### **Run the full experiment**
-```bash
+```setup
 chmod +x to_run.sh
 ./to_run.sh
 ```
