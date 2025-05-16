@@ -1,0 +1,60 @@
+Model: gemma-3-27b-it on realWorldHCTs on dataset ALL
+Mean Precision: 0.4484
+Mean Recall: 0.4313
+Mean F1 Score: 0.4304
+Mean CC Score: 0.3505
+**************************************************
+Model: gemma-3-27b-it on realWorldHCTs on dataset psa
+Mean Precision: 0.4406
+Mean Recall: 0.4238
+Mean F1 Score: 0.4225
+Mean CC Score: 0.3378
+**************************************************
+Model: gemma-3-27b-it on realWorldHCTs on dataset arxiv
+Mean Precision: 0.4603
+Mean Recall: 0.4397
+Mean F1 Score: 0.4396
+Mean CC Score: 0.3766
+**************************************************
+Model: gemma-3-27b-it on realWorldHCTs on dataset census
+Mean Precision: 0.4194
+Mean Recall: 0.4174
+Mean F1 Score: 0.4116
+Mean CC Score: 0.3592
+**************************************************
+Model: gemma-3-27b-it on realWorldHCTs on dataset pak
+Mean Precision: 0.5002
+Mean Recall: 0.4795
+Mean F1 Score: 0.4826
+Mean CC Score: 0.4035
+**************************************************
+Model: Llama-3.3-70B-Instruct on realWorldHCTs on dataset ALL
+Mean Precision: 0.4708
+Mean Recall: 0.4975
+Mean F1 Score: 0.4726
+Mean CC Score: 0.4114
+**************************************************
+Model: Llama-3.3-70B-Instruct on realWorldHCTs on dataset psa
+Mean Precision: 0.4667
+Mean Recall: 0.4940
+Mean F1 Score: 0.4686
+Mean CC Score: 0.4008
+**************************************************
+Model: Llama-3.3-70B-Instruct on realWorldHCTs on dataset arxiv
+Mean Precision: 0.4534
+Mean Recall: 0.4765
+Mean F1 Score: 0.4527
+Mean CC Score: 0.4154
+**************************************************
+Model: Llama-3.3-70B-Instruct on realWorldHCTs on dataset census
+Mean Precision: 0.4561
+Mean Recall: 0.4888
+Mean F1 Score: 0.4557
+Mean CC Score: 0.4315
+**************************************************
+Model: Llama-3.3-70B-Instruct on realWorldHCTs on dataset pak
+Mean Precision: 0.5309
+Mean Recall: 0.5548
+Mean F1 Score: 0.5355
+Mean CC Score: 0.4750
+**************************************************

@@ -1,0 +1,47 @@
+##### This is made to allign with config from enes sample 2 
+
+### model
+model_name_or_path: meta-llama/Meta-Llama-3-8B-Instruct
+trust_remote_code: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+deepspeed: examples/deepspeed/ds_z3_config.json
+
+### dataset
+dataset: hctqa_real_only
+dataset_dir: data 
+template: llama3
+cutoff_len: 4096
+overwrite_cache: true
+preprocessing_num_workers: 16 # parallel cpus used
+
+### output
+output_dir: saves/llama3-instruct-run1--fullSFT_realHCTsOnly
+logging_steps: 20
+save_steps: 5000
+plot_loss: true
+overwrite_output_dir: true
+## optional for wandb logging
+# report_to: wandb
+# run_name: llama3-instruct-8b-run2
+
+### train
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 2
+learning_rate: 5.0e-07 ## 1.0e-5
+lr_scheduler_type: cosine_with_min_lr
+lr_scheduler_kwargs:
+    min_lr: 5.0e-08
+num_train_epochs: 2
+warmup_ratio: 0.1
+bf16: true
+ddp_timeout: 180000000
+
+### eval - optional
+# val_size: 0.001
+# per_device_eval_batch_size: 1
+# eval_strategy: steps
+# eval_steps: 10000

@@ -1,9 +1,7 @@
 
 import sys, os, torch, argparse, json, math, time, gzip
 from vllm.utils import cuda_device_count_stateless
-from llm_query import llm_query
 import PIL, vllm, base64
-import pandas as pd
 from tqdm import tqdm
 os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 
@@ -28,22 +26,6 @@ warnings.filterwarnings("ignore")
 ####################################################################################################################
 ############################################# HELPER FUNCTIONS #####################################################
 ####################################################################################################################
-
-# model_names = [
-    # "HuggingFaceM4/Idefics3-8B-Llama3",
-    # "OpenGVLab/InternVL2_5-8B-MPO",
-    # "OpenGVLab/InternVL2-4B",
-    # "llava-hf/llava-1.5-7b-hf",
-    # "llava-hf/llava-v1.6-mistral-7b-hf",
-    # "llava-hf/llava-v1.6-vicuna-7b-hf",
-    # "meta-llama/Llama-3.2-11B-Vision-Instruct",
-    # "allenai/Molmo-7B-D-0924",
-    # "google/paligemma2-10b-ft-docci-448",
-    # "mistralai/Pixtral-12B-2409",
-    # "microsoft/Phi-3-vision-128k-instruct",
-    # "microsoft/Phi-3.5-vision-instruct",
-    # "Qwen/Qwen2-VL-7B-Instruct"
-# ]
 
 def file_to_data_url(file_path: str):
     """
@@ -89,15 +71,15 @@ def make_image_prompt_dict(qaps_file):
     return all_qaps_dict
 
 
-def do_inference(model_t, output_folder, qaps_file):
+def do_inference(model_t, output_folder, qaps_file, num_gpus=1):
 
     # Ensure output_folder exists
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    if model_t == "meta-llama/Llama-3.2-11B-Vision-Instruct": # CUDA ERROR
+    if model_t == "meta-llama/Llama-3.2-11B-Vision-Instruct": # Requires specific CUDA version to run with VLLM
         llm = vllm.LLM(model=model_t, 
-                    tensor_parallel_size = 2,
+                    tensor_parallel_size = num_gpus,
                     max_model_len=4096,
                     gpu_memory_utilization=0.8,
                     trust_remote_code=True,
@@ -105,10 +87,19 @@ def do_inference(model_t, output_folder, qaps_file):
                     enforce_eager=True
                     )
     elif model_t == "mistralai/Pixtral-12B-2409":
-        llm = vllm.LLM(model=model_t, trust_remote_code=True, tokenizer_mode="mistral", tensor_parallel_size = 2)
+        llm = vllm.LLM(model=model_t, 
+                    trust_remote_code=True, 
+                    tokenizer_mode="mistral", 
+                    gpu_memory_utilization=0.9,
+                    tensor_parallel_size = num_gpus
+                    )
 
     else:
-        llm = vllm.LLM(model=model_t, trust_remote_code=True, tensor_parallel_size = 2)
+        llm = vllm.LLM(model=model_t, 
+                    trust_remote_code=True, 
+                    gpu_memory_utilization=0.9,
+                    tensor_parallel_size = num_gpus
+                    )
     
     ### INFERENCE 
     
@@ -117,7 +108,7 @@ def do_inference(model_t, output_folder, qaps_file):
     ############################################################################################
     ### Load all question and image paths 
     all_qap_info_dict = make_image_prompt_dict(qaps_file)
-    output_file_name = os.path.join(output_folder, f"results--{model_t.split('/')[-1]}--vision--results.jsonl")
+    output_file_name = os.path.join(output_folder, f"{model_t.split('/')[-1]}--vision--results.jsonl")
 
     if model_t == "Qwen/Qwen2-VL-7B-Instruct":
 
@@ -172,7 +163,7 @@ def do_inference(model_t, output_folder, qaps_file):
             # Inference
             output = llm.generate(vllm.inputs.TokensPrompt(prompt_token_ids = inputs["input_ids"].flatten().tolist()), sampling_params=sampling_params)
             all_outputs_buffer.append({
-                "qap_id": qap_id,
+                "id": qap_id,
                 "response": output[0].outputs[0].text
             })
 
@@ -218,7 +209,7 @@ def do_inference(model_t, output_folder, qaps_file):
             for o in outputs:
                 generated_text = o.outputs[0].text
                 all_outputs_buffer.append({
-                    "qap_id": qap_id,
+                    "id": qap_id,
                     "response": generated_text
                 })
 
@@ -259,7 +250,7 @@ def do_inference(model_t, output_folder, qaps_file):
 
             outputs = llm.chat(messages, sampling_params=sampling_params)
             all_outputs_buffer.append({
-                "qap_id": qap_id,
+                "id": qap_id,
                 "response": outputs[0].outputs[0].text
             })
             
@@ -312,7 +303,7 @@ def do_inference(model_t, output_folder, qaps_file):
             for o in outputs:
                 generated_text = o.outputs[0].text
                 all_outputs_buffer.append({
-                    "qap_id": qap_id,
+                    "id": qap_id,
                     "response": generated_text
                 })
 
@@ -336,14 +327,47 @@ def do_inference(model_t, output_folder, qaps_file):
 
 
 if __name__ == "__main__":
+    
+    all_models = [
+        "HuggingFaceM4/Idefics3-8B-Llama3",
+        "OpenGVLab/InternVL2_5-8B-MPO",
+        "OpenGVLab/InternVL2-4B",
+        "llava-hf/llava-1.5-7b-hf",
+        "llava-hf/llava-v1.6-mistral-7b-hf",
+        "llava-hf/llava-v1.6-vicuna-7b-hf",
+        "meta-llama/Llama-3.2-11B-Vision-Instruct",
+        "allenai/Molmo-7B-D-0924",
+        "google/paligemma2-10b-ft-docci-448",
+        "mistralai/Pixtral-12B-2409",
+        "microsoft/Phi-3-vision-128k-instruct",
+        "microsoft/Phi-3.5-vision-instruct",
+        "Qwen/Qwen2-VL-7B-Instruct"
+    ]
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, required=True, help="Model name to run inference on")
-    parser.add_argument("--output_folder", type=str, required=True, help="Output folder to save results")
-    parser.add_argument("--qaps_file", type=str, required=True, help="Path to QAPS file")
+    if not parser.parse_args().model in all_models:
+        print("Model not supported. Please choose from the following models:")
+        for model in all_models:
+            print(model)
+        print("or choose 'all' to run all models.")
+        sys.exit(1)
+    parser.add_argument("--output_folder", type=str, default="../../results/model_responses/vlm/", help="Output folder to save results")
+    parser.add_argument("--qaps_file", type=str, default = "../../datasets/realWorld_datasets/qaps/realWorld_HCT_qaps.json", help="Path to QAPS file")
+    parser.add_argument("--num_gpus", type=int, default=1, help="Number of GPUs to use for inference. Most models require atleast 1 A100's to run.")
 
     args = parser.parse_args()
 
-    do_inference(args.model, args.output_folder, args.qaps_file)
+    # Check if qaps file exists
+    if not os.path.exists(args.qaps_file):
+        print("QAPS file not found. Please provide a valid path to the QAPS JSON file that is normally in the `datasets/realWorld_datasets/qaps` folder.")
+        sys.exit(1)
+    
+    if args.model == "all":
+        for model in all_models:
+            do_inference(model, args.output_folder, args.qaps_file, args.num_gpus)
+    else:
+        do_inference(args.model, args.output_folder, args.qaps_file, args.num_gpus)
 
-# Example command to run this script
-# python vllm_inference.py --model "meta-llama/Llama-3.2-11B-Vision-Instruct"
+# Example command to run this script with a specific model
+# python vllm_inference.py --model "meta-llama/Llama-3.2-11B-Vision-Instruct" --num_gpus 2 
