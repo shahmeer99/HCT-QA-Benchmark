@@ -1,4 +1,4 @@
-# **Human-Centric Tables (HCT) Question Answering Benchmark**
+# ** Paper: HCT-QA: A Benchmark for Question Answering on Human-Centric Tables**
 
 ## **Introduction**
 This repository provides a benchmark for question answering on **Human-Centric Tables (HCTs)**. HCTs are non-relational tables with complex structures, making them difficult to parse and understand. This benchmark enables the evaluation of **large language models (LLMs) and vision-language models (VLMs)** on both real-world and synthetic HCTs.
@@ -117,21 +117,10 @@ The parameters for this command are:
 | `--num_gpus` | Number of available GPUs to run parallel inference on, default = 1. |
 | `--use_system_prompt` | Boolean to determine whether to use system prompt or not (some models like gemma-2 do not support system prompting) |
 
+## Finetuned Models
 
-
-#### **Run the full experiment**
-```setup
-chmod +x to_run.sh
-./to_run.sh
-```
-This script will:
-- Run LLM inference on real-world data.
-- Run LLM inference on synthetic datasets.
-- Run VLM inference on real-world data.
-- Set up the environment and parameters automatically.
-
-For more details, inspect `to_run.sh` to customize it for your use case.
-
+<FILLER>
+  
 ---
 
 ## **Planned Updates & Future Work**
