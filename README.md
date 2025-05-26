@@ -52,6 +52,10 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 - **`tables/`**: HCTs provided as **compressed** `.gz` files (CSV and images).
 
 #### The data is also available in [`HuggingFace`](https://huggingface.co/datasets/qcri-ai/HCTQA)
+```python
+<pre> ```python from datasets import load_dataset dataset = load_dataset("qcri-ai/HCTQA") ``` </pre>
+
+```
 
 **Ground Truth Format**:
 The `gt` attribute in the prompts and qaps files present the answer in the following format:
@@ -99,9 +103,9 @@ Replace `<your_token_here>` with your actual **Hugging Face API Token**.
 
 ### **2. Running the Experiments**
 
-To run experiment with text-only LLMs run:  
+To run experiments with text-only LLMs run:  
 ```bash
-cd /scripts/llm_inference
+cd /scripts/inference_experiments/llm_inference
 
 python llm_inf.py --model_name_or_path "google/gemma-3-12b-it" --output_folder "../../results/model_responses/llms/" --data_source_type "real" --split_name "all" --batch_size 32 --num_gpus 1 --use_system_prompt True
 ```
@@ -117,9 +121,49 @@ The parameters for this command are:
 | `--num_gpus` | Number of available GPUs to run parallel inference on, default = 1. |
 | `--use_system_prompt` | Boolean to determine whether to use system prompt or not (some models like gemma-2 do not support system prompting) |
 
+To run experiments with vision-text VLMs run:  
+```bash
+cd /scripts/inference_experiments/llm_inference
+
+python vllm_inference.py --model "meta-llama/Llama-3.2-11B-Vision-Instruct" --num_gpus 2 
+```
+
+The parameters for this command are:
+| Parameter | Description |
+|-----------|-------------|
+| `--model` | Path to local or huggingface model. "all" for models used in the paper. |
+| `--output_folder` | Path to folder where model responses will be stored.|
+| `--qaps_file` | path to the qaps file (normally in "datasets/realWorld_datasets/qaps") |
+| `--num_gpus` | Number of available GPUs to run parallel inference on, default = 1|
+
 ## Finetuned Models
 
-<FILLER>
+We use (LLAMA-Factory)[https://github.com/hiyouga/LLaMA-Factory] to fine-tune our models. 
+
+Here are the steps to replicate the training:
+
+1. Clone LLAMA-Factory repository
+```bash
+git clone https://github.com/hiyouga/LLaMA-Factory.git
+```
+
+2. Create custom dataset for finetuning using the script we provide
+```bash
+cd /scripts/finetuning/datatset_prep_for_llama_factory
+
+python3 create_hctqa_in_alpacaJson.py --path_to_datasets_json_file ~/LLaMA-Factory/data/dataset_info.json --path_to_main_llama_factory_folder ~/LLaMA-Factory
+```
+For the `--path_to_datasets_json_file` argument provide the path to the dataset_info.json file in your lcoal cloned LLAMA-Factory directory. This file should already exist when you clone.   
+For the `--path_to_main_llama_factory_folder` argument provide the path to the main LLaMA-Factory folder when you clone the repo (the parent folder that contains all their files anc code).  
+
+3. Create a config.yaml file for finetuning. Example files are provided in `/scripts/finetuning/config_yamls/`
+
+4. Copy your config.yaml file into the main `/LLaMA-Factory` folder inside your cloned repo. Do not skip this step as the LLaMA-Factory scripts expect this config to be in the same directory.
+
+5. Run the train command (from the inside the /LLaMA-Factory folder):
+```bash
+llamafactory-cli train <path to your config.yaml that should be in the main /LLaMA-Factory folder
+```
   
 ---
 
