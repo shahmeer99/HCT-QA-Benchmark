@@ -136,6 +136,22 @@ The parameters for this command are:
 | `--qaps_file` | path to the qaps file (normally in "datasets/realWorld_datasets/qaps") |
 | `--num_gpus` | Number of available GPUs to run parallel inference on, default = 1|
 
+### **3. Scoring the Model Responses**
+
+We provide a script that scores the model responses outputted by the LLM Inference scripts detailed above. To run the scores run:
+``` bash
+cd /scripts/score_model_responses
+python score_responses.py --folder_name /path/to/folder --output_file /path/to/output.txt --print_results --mode vision
+```
+
+The parameters for this command are:
+| Parameter | Description |
+|-----------|-------------|
+| `--folder_name` | Folder where model responses are stored. (this should be the --output_folder argument from the inference_experiments commands). |
+| `--output_folder` | Path to a TXT FILE where model scores will be written to.|
+| `--print_results` | True, to print results to console in addition to writing to output file. Otherwise, False.") |
+| `--mode` | "real" for results on text-only Real HCTs, "synthetic" for results on text-only Synthetic HCTs, "vision" for results on vision-text modality|
+
 ## Finetuned Models
 
 We use (LLAMA-Factory)[https://github.com/hiyouga/LLaMA-Factory] to fine-tune our models. 
@@ -169,10 +185,8 @@ llamafactory-cli train <path to your config.yaml that should be in the main /LLa
 
 ## **Planned Updates & Future Work**
 
-- **Leaderboard:** Track model performance on HCT-QA.
-- **Dataset on Hugging Face:** Public dataset release for easy access.
-- **Expanding the Dataset:** More HCTs from diverse sources & domains.
-- **Question Difficulty Classification:** A framework for automatic difficulty scoring.
+- **Leaderboard:** We are working on a comprehensive leaderboard that includes all the models tested in the paper and many more recent ones.
+- **Expanding the Dataset:** We are currently expanding the dataset by including more real world HCTs from a variety of new sources.
 
 Stay tuned for updates!
 
