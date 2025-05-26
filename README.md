@@ -53,8 +53,8 @@ Details of the benchmark methodology and dataset can be found in our upcoming pa
 
 #### The data is also available in [`HuggingFace`](https://huggingface.co/datasets/qcri-ai/HCTQA)
 ```python
-<pre> ```python from datasets import load_dataset dataset = load_dataset("qcri-ai/HCTQA") ``` </pre>
-
+from datasets import load_dataset
+dataset = load_dataset("qcri-ai/HCTQA")
 ```
 
 **Ground Truth Format**:
@@ -123,7 +123,7 @@ The parameters for this command are:
 
 To run experiments with vision-text VLMs run:  
 ```bash
-cd /scripts/inference_experiments/llm_inference
+cd /scripts/inference_experiments/vlm_inference
 
 python vllm_inference.py --model "meta-llama/Llama-3.2-11B-Vision-Instruct" --num_gpus 2 
 ```
